@@ -31,6 +31,7 @@ class UserMiddleware(EventTypedMiddleware):
             session_pool=data["session_pool"],
             redis=data["redis"],
             config=data["config"],
+            tonapi=data["tonapi"],
         )
 
         user: Optional[UserDto] = await user_service.by_tg_id(telegram_id=aiogram_user.id)

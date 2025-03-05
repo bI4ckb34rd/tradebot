@@ -7,6 +7,10 @@ messages-start = 👋 Hi, { $name }! Welcome to Crypto Trading Bot!
 
     📌 Why? Due to time constraints, these features are not yet implemented. Stay tuned for updates!
 messages-soon = 🔜 soon ❗️
+messages-wallet_info = 👛 Your Wallet Information:
+
+    <b>Address:</b> <code>{ $address }</code>
+    <b>Balance:</b> { $ton_balance } TON
 
 buttons-menu = 📚 Menu
 buttons-back = 🔙 Back

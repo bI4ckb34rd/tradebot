@@ -26,6 +26,7 @@ def create_dispatcher(config: AppConfig) -> Dispatcher:
     """
     redis: Redis = create_redis(url=config.redis.build_url())
     i18n_middleware: I18nMiddleware = create_i18n_middleware(config)
+    tonapi: TonapiClient = TonapiClient(api_key=config.common.tonconsole_key.get_secret_value())
 
     dispatcher: Dispatcher = Dispatcher(
         name="main_dispatcher",
@@ -37,7 +38,7 @@ def create_dispatcher(config: AppConfig) -> Dispatcher:
         config=config,
         session_pool=create_session_pool(config=config),
         redis=RedisRepository(client=redis),
-        tonapi=TonapiClient(api_key=config.common.tonconsole_key.get_secret_value()),
+        tonapi=tonapi,
         coinmarketcap=CoinMarketCapAPI(api_key=config.common.coinmarketcap_key.get_secret_value()),
     )
 

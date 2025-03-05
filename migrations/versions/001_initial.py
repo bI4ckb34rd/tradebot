@@ -28,7 +28,7 @@ def upgrade() -> None:
         sa.Column("language", sa.String(length=2), nullable=False),
         sa.Column("language_code", sa.String(), nullable=True),
         sa.Column("wallet_address", sa.String(), nullable=True),
-        sa.Column("wallet_mnemonic", sa.String(), nullable=True),
+        sa.Column("wallet_mnemonic", sa.JSON(), nullable=True),
         sa.Column("blocked_at", sa.DateTime(timezone=True), nullable=True),
         sa.Column(
             "created_at",

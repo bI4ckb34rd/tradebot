@@ -31,18 +31,20 @@ def main_keyboard(i18n: I18nContext) -> InlineKeyboardMarkup:
 
 def wallet_keyboard(i18n: I18nContext) -> InlineKeyboardMarkup:
     builder: InlineKeyboardBuilder = InlineKeyboardBuilder()
-    builder.button(text=i18n.buttons.deposit(_path="menu.ftl"), callback_data=CDDeposit())
+    builder.button(text=i18n.buttons.deposite(_path="menu.ftl"), callback_data=CDDeposit())
     builder.button(text=i18n.buttons.withdraw(_path="menu.ftl"), callback_data=CDWithdraw())
+    builder.button(text=i18n.buttons.back(_path="menu.ftl"), callback_data=CDMenu())
+    builder.adjust(2, 1)
     return builder.as_markup()
 
 
 def cancel_keyboard(i18n: I18nContext, data: CallbackData) -> InlineKeyboardMarkup:
     builder: InlineKeyboardBuilder = InlineKeyboardBuilder()
-    builder.button(text=i18n.buttons.cancel(), callback_data=data)
+    builder.button(text=i18n.buttons.cancel(_path="menu.ftl"), callback_data=data)
     return builder.as_markup()
 
 
 def back_keyboard(i18n: I18nContext) -> InlineKeyboardMarkup:
     builder: InlineKeyboardBuilder = InlineKeyboardBuilder()
-    builder.button(text=i18n.buttons.back(), callback_data=CDMenu())
+    builder.button(text=i18n.buttons.back(_path="menu.ftl"), callback_data=CDMenu())
     return builder.as_markup()

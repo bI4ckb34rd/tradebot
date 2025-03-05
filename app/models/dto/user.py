@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 
 from aiogram import html
 from aiogram.utils.link import create_tg_link
@@ -16,7 +16,7 @@ class UserDto(PydanticModel):
     bot_blocked: bool = False
     blocked_at: Optional[datetime] = None
     wallet_address: Optional[str] = None
-    wallet_mnemonic: Optional[str] = None
+    wallet_mnemonic: Optional[List[str]] = None
 
     @property
     def url(self) -> str:

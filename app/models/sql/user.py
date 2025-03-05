@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import String
+from sqlalchemy import JSON, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.models.dto.user import UserDto
@@ -21,7 +21,7 @@ class User(Base, TimestampMixin):
     language_code: Mapped[Optional[str]] = mapped_column()
     blocked_at: Mapped[Optional[datetime]] = mapped_column()
     wallet_address: Mapped[Optional[str]] = mapped_column(nullable=True)
-    wallet_mnemonic: Mapped[Optional[str]] = mapped_column(nullable=True)
+    wallet_mnemonic: Mapped[Optional[list[str]]] = mapped_column(JSON, nullable=True)
 
     def dto(self) -> UserDto:
         return UserDto.model_validate(self)

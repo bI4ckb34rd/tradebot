@@ -3,6 +3,8 @@ from typing import Any, Awaitable, Callable, Optional, cast
 from aiogram.types import User as AiogramUser
 from aiogram_i18n.cores import BaseCore
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+from tonutils.client import TonapiClient
+from tonutils.wallet import WalletV5R1
 
 from app.models.config import AppConfig
 from app.models.dto.user import UserDto
@@ -14,16 +16,19 @@ class UserService:
     session_pool: async_sessionmaker[AsyncSession]
     redis: RedisRepository
     config: AppConfig
+    tonapi: TonapiClient
 
     def __init__(
         self,
         session_pool: async_sessionmaker[AsyncSession],
         redis: RedisRepository,
         config: AppConfig,
+        tonapi: TonapiClient,
     ) -> None:
         self.session_pool = session_pool
         self.redis = redis
         self.config = config
+        self.tonapi = tonapi
 
     async def create(
         self,
@@ -80,3 +85,19 @@ class UserService:
             value=user,
             cache_time=self.config.common.users_cache_time,
         )
+
+    async def get_wallet(self, user: UserDto) -> WalletV5R1:
+        if user.wallet_connected:
+            wallet, public_key, private_key, mnemonic = WalletV5R1.from_mnemonic(
+                self.tonapi, user.wallet_mnemonic
+            )
+            return wallet
+
+        wallet, public_key, private_key, mnemonic = WalletV5R1.create(self.tonapi)
+        await self.update(
+            user,
+            wallet_address=wallet.address.to_str(),
+            wallet_mnemonic=mnemonic,
+        )
+
+        return wallet
