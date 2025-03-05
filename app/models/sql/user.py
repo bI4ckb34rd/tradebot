@@ -20,6 +20,8 @@ class User(Base, TimestampMixin):
     language: Mapped[str] = mapped_column(String(length=2))
     language_code: Mapped[Optional[str]] = mapped_column()
     blocked_at: Mapped[Optional[datetime]] = mapped_column()
+    wallet_address: Mapped[Optional[str]] = mapped_column(nullable=True)
+    wallet_mnemonic: Mapped[Optional[str]] = mapped_column(nullable=True)
 
     def dto(self) -> UserDto:
         return UserDto.model_validate(self)

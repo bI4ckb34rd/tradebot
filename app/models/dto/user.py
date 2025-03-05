@@ -15,6 +15,8 @@ class UserDto(PydanticModel):
     language_code: Optional[str] = None
     bot_blocked: bool = False
     blocked_at: Optional[datetime] = None
+    wallet_address: Optional[str] = None
+    wallet_mnemonic: Optional[str] = None
 
     @property
     def url(self) -> str:
@@ -23,3 +25,7 @@ class UserDto(PydanticModel):
     @property
     def mention(self) -> str:
         return html.link(value=self.name, link=self.url)
+
+    @property
+    def wallet_connected(self) -> bool:
+        return self.wallet_address is not None
