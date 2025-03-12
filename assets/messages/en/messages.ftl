@@ -11,10 +11,18 @@ messages-wallet_info = 👛 Your Wallet Information:
 
     <b>Address:</b> <code>{ $address }</code>
     <b>Balance:</b> { $ton_balance } TON
+messages-language = 🌎 Select your preferred language by clicking button below:
+
+extra-language = 🇬🇧 English
+extra-selectable = { $selected ->
+    [true] [ {$value} ]
+    *[other] { $value }
+}
 
 buttons-menu = 📚 Menu
 buttons-back = 🔙 Back
 buttons-cancel = 🚫 Cancel
+buttons-language = 🌎 Language
 buttons-wallet = 👛 Wallet
 buttons-buy = 📈 Buy
 buttons-sell = 📉 Sell

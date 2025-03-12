@@ -1,4 +1,6 @@
+from decimal import Decimal
 from enum import Enum
+from fractions import Fraction
 from typing import TYPE_CHECKING, Any, ClassVar, Optional
 from uuid import UUID
 
@@ -10,7 +12,7 @@ class StorageKey(BaseModel):
         __separator__: ClassVar[str]
         """Data separator (default is :code:`:`)"""
         __prefix__: ClassVar[Optional[str]]
-        """Storage key prefix"""
+        """Callback prefix"""
 
     # noinspection PyMethodOverriding
     def __init_subclass__(cls, **kwargs: Any) -> None:
@@ -24,21 +26,26 @@ class StorageKey(BaseModel):
         super().__init_subclass__(**kwargs)
 
     @classmethod
-    def encode_value(cls, value: Any) -> str:
+    def encode_value(cls, key: str, value: Any) -> str:
         if value is None:
-            return "null"
+            return ""
         if isinstance(value, Enum):
             return str(value.value)
         if isinstance(value, UUID):
             return value.hex
         if isinstance(value, bool):
             return str(int(value))
-        return str(value)
+        if isinstance(value, (int, str, float, Decimal, Fraction)):
+            return str(value)
+        raise ValueError(
+            f"Attribute {key}={value!r} of type {type(value).__name__!r}"
+            f" can not be packed to callback data"
+        )
 
     def pack(self) -> str:
         result = [self.__prefix__] if self.__prefix__ else []
         for key, value in self.model_dump(mode="json").items():
-            encoded = self.encode_value(value)
+            encoded = self.encode_value(key, value)
             if self.__separator__ in encoded:
                 raise ValueError(
                     f"Separator symbol {self.__separator__!r} can not be used "

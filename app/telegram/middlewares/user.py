@@ -11,7 +11,7 @@ from app.telegram.middlewares.event_typed import EventTypedMiddleware
 from app.utils.logging import database as logger
 
 if TYPE_CHECKING:
-    from app.models.dto.user import UserDto
+    from app.models.dto import UserDto
 
 
 class UserMiddleware(EventTypedMiddleware):
@@ -27,13 +27,7 @@ class UserMiddleware(EventTypedMiddleware):
             # when accepting chat_join_request and receiving chat_member updates.
             return await handler(event, data)
 
-        user_service = data["user_service"] = UserService(
-            session_pool=data["session_pool"],
-            redis=data["redis"],
-            config=data["config"],
-            tonapi=data["tonapi"],
-        )
-
+        user_service: UserService = data["user_service"]
         user: Optional[UserDto] = await user_service.by_tg_id(telegram_id=aiogram_user.id)
         if user is None:
             i18n: I18nMiddleware = data["i18n_middleware"]

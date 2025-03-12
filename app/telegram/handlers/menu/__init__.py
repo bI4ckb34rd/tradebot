@@ -2,7 +2,10 @@ from typing import Final
 
 from aiogram import Router
 
-from . import menu, wallet
+from . import language, main
 
 router: Final[Router] = Router(name=__name__)
-router.include_routers(menu.router, wallet.router)
+router.include_routers(
+    main.router,
+    language.router,
+)

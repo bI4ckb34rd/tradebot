@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import cast
 
+from aiogram import Dispatcher
 from aiogram_i18n import I18nMiddleware
 from aiogram_i18n.cores import FluentRuntimeCore
 
@@ -25,3 +26,17 @@ def create_i18n_middleware(config: AppConfig) -> I18nMiddleware:
         manager=UserManager(),
         default_locale=DEFAULT_LOCALE,
     )
+
+
+def setup_i18n_middleware(dispatcher: Dispatcher, config: AppConfig) -> None:
+    middleware: I18nMiddleware = create_i18n_middleware(config=config)
+    for event_type in dispatcher.resolve_used_update_types():
+        dispatcher.observers[event_type].middleware(middleware)
+    dispatcher.error.middleware(middleware)
+    dispatcher.startup.register(middleware.core.startup)
+    dispatcher.shutdown.register(middleware.core.shutdown)
+    dispatcher.startup.register(middleware.manager.startup)
+    dispatcher.shutdown.register(middleware.manager.shutdown)
+    if middleware.enabled_startup:
+        dispatcher.startup.register(middleware.startup)
+    dispatcher[middleware.middleware_key] = middleware

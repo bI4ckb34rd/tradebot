@@ -6,7 +6,7 @@ from pydantic import BaseModel, TypeAdapter
 from redis.asyncio import Redis
 from redis.typing import ExpiryT
 
-from app.models.dto.user import UserDto
+from app.models.dto import UserDto
 from app.utils import mjson
 from app.utils.key_builder import StorageKey
 
@@ -38,13 +38,10 @@ class RedisRepository:
         await self.client.aclose(close_connection_pool=True)
 
     async def save_user(self, key: Any, value: UserDto, cache_time: int) -> None:
-        user_key: UserKey = UserKey(key=key)
-        await self.set(key=user_key, value=value, ex=cache_time)
+        await self.set(key=UserKey(key=str(key)), value=value, ex=cache_time)
 
     async def get_user(self, key: Any) -> Optional[UserDto]:
-        user_key: UserKey = UserKey(key=key)
-        return await self.get(key=user_key, validator=UserDto)
+        return await self.get(key=UserKey(key=str(key)), validator=UserDto)
 
     async def delete_user(self, key: Any) -> None:
-        user_key: UserKey = UserKey(key=key)
-        await self.delete(user_key)
+        await self.delete(key=UserKey(key=str(key)))

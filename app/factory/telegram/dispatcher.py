@@ -4,30 +4,31 @@ from aiogram import Dispatcher, F
 from aiogram.enums import ChatType
 from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.utils.callback_answer import CallbackAnswerMiddleware
-from aiogram_i18n import I18nMiddleware
-from coinmarketcapapi import CoinMarketCapAPI
 from redis.asyncio import Redis
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from tonutils.client import TonapiClient
 
+from app.factory.redis import create_redis
+from app.factory.session_pool import create_session_pool
+from app.factory.telegram.i18n import setup_i18n_middleware
 from app.models.config import AppConfig
-from app.services.database.redis import RedisRepository
-from app.telegram.handlers import admin, common, extra
-from app.telegram.middlewares import MessageHelperMiddleware, UserMiddleware
+from app.services.database import RedisRepository
+from app.services.user import UserService
+from app.telegram.handlers import admin, extra, menu, trade, wallet
+from app.telegram.middlewares import (
+    MessageHelperMiddleware,
+    UserMiddleware,
+)
 from app.utils import mjson
-
-from ..redis import create_redis
-from ..session_pool import create_session_pool
-from .i18n import create_i18n_middleware
 
 
 def create_dispatcher(config: AppConfig) -> Dispatcher:
-    """
-    :return: Configured ``Dispatcher`` with installed middlewares and included routers
-    """
     redis: Redis = create_redis(url=config.redis.build_url())
-    i18n_middleware: I18nMiddleware = create_i18n_middleware(config)
+    session_pool: async_sessionmaker[AsyncSession] = create_session_pool(config=config)
+    redis_repository: RedisRepository = RedisRepository(client=redis)
     tonapi: TonapiClient = TonapiClient(api_key=config.common.tonconsole_key.get_secret_value())
 
+    # noinspection PyArgumentList
     dispatcher: Dispatcher = Dispatcher(
         name="main_dispatcher",
         storage=RedisStorage(
@@ -36,17 +37,29 @@ def create_dispatcher(config: AppConfig) -> Dispatcher:
             json_dumps=mjson.encode,
         ),
         config=config,
-        session_pool=create_session_pool(config=config),
-        redis=RedisRepository(client=redis),
+        session_pool=session_pool,
+        redis=redis_repository,
+        user_service=UserService(
+            session_pool=session_pool,
+            redis=redis_repository,
+            config=config,
+            tonapi=tonapi,
+        ),
         tonapi=tonapi,
-        coinmarketcap=CoinMarketCapAPI(api_key=config.common.coinmarketcap_key.get_secret_value()),
     )
 
-    dispatcher.include_routers(admin.router, common.router, extra.router)
+    dispatcher.include_routers(
+        admin.router,
+        menu.router,
+        wallet.router,
+        extra.router,
+        trade.router,
+    )
     dispatcher.message.filter(F.chat.type == ChatType.PRIVATE)
     dispatcher.callback_query.filter(F.message.chat.type == ChatType.PRIVATE)
+
     UserMiddleware().setup_inner(router=dispatcher)
-    i18n_middleware.setup(dispatcher=dispatcher)
+    setup_i18n_middleware(dispatcher=dispatcher, config=config)
     MessageHelperMiddleware().setup_inner(router=dispatcher)
     dispatcher.callback_query.middleware(CallbackAnswerMiddleware())
 

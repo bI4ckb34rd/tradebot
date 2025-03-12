@@ -7,7 +7,7 @@ from tonutils.client import TonapiClient
 from tonutils.wallet import WalletV5R1
 
 from app.models.config import AppConfig
-from app.models.dto.user import UserDto
+from app.models.dto import UserDto
 from app.models.sql import User
 from app.services.database import RedisRepository, SQLSessionContext
 
@@ -39,12 +39,11 @@ class UserService:
             user: User = User(
                 telegram_id=aiogram_user.id,
                 name=aiogram_user.full_name,
-                language=(
+                locale=(
                     aiogram_user.language_code
                     if aiogram_user.language_code in i18n_core.locales
                     else cast(str, i18n_core.default_locale)
                 ),
-                language_code=aiogram_user.language_code,
             )
             await uow.commit(user)
         return user.dto()

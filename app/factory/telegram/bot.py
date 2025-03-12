@@ -20,5 +20,8 @@ def create_bot(config: AppConfig) -> Bot:
     return Bot(
         token=config.telegram.bot_token.get_secret_value(),
         session=session,
-        default=DefaultBotProperties(parse_mode=ParseMode.HTML),
+        default=DefaultBotProperties(
+            parse_mode=ParseMode.HTML,
+            link_preview_is_disabled=True,
+        ),
     )

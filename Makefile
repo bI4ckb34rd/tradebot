@@ -65,6 +65,12 @@ app-destroy: ## Destroy docker containers
 app-logs: ## Show bot logs
 	@docker compose logs -f bot
 
+.PHONY: app-drop
+app-drop: app-destroy ## Drop all docker containers, images and volumes
+	docker container prune -f
+	docker images -q | xargs docker rmi -f
+	docker volume prune -f
+
 ##@ Other
 
 .PHONY: name

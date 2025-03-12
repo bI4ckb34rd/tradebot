@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import List, Optional
 
 from aiogram import html
@@ -11,12 +10,10 @@ class UserDto(PydanticModel):
     id: int
     telegram_id: int
     name: str
-    language: str
-    language_code: Optional[str] = None
-    bot_blocked: bool = False
-    blocked_at: Optional[datetime] = None
     wallet_address: Optional[str] = None
     wallet_mnemonic: Optional[List[str]] = None
+    locale: str
+    bot_blocked: bool = False
 
     @property
     def url(self) -> str:

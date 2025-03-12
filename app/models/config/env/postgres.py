@@ -10,7 +10,6 @@ class PostgresConfig(EnvSettings, env_prefix="POSTGRES_"):
     password: SecretStr
     port: int
     user: str
-    data: str
 
     def build_url(self) -> URL:
         return URL.create(

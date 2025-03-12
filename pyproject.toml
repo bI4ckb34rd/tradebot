@@ -59,6 +59,7 @@ exclude = [
     ".venv",
     ".idea",
 ]
+
 [tool.mypy]
 plugins = [
     "sqlalchemy.ext.mypy.plugin",

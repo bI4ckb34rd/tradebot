@@ -21,7 +21,7 @@ class FluentBool(FluentType):
 
 
 class FluentNullable(FluentType):
-    def __init__(self, value: Optional[Any] = None) -> None:
+    def __init__(self, value: Optional[str | float] = None) -> None:
         self.value = value
 
     def format(self, *_: Any) -> str:

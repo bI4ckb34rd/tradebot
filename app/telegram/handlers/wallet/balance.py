@@ -8,8 +8,8 @@ from aiogram_i18n import I18nContext
 from aiohttp import ClientResponseError
 from tonutils.utils import to_amount
 
-from app.telegram.keyboards.callback_data.menu import CDWallet
-from app.telegram.keyboards.menu import wallet_keyboard
+from app.telegram.keyboards.callback_data.wallet import CDWallet
+from app.telegram.keyboards.wallet import wallet_keyboard
 
 if TYPE_CHECKING:
     from app.models.dto import UserDto
