@@ -23,3 +23,9 @@ class SGSell(StatesGroup):
     enter_amount = State()
     # select_currency = State()
     confirm = State()
+
+
+class SGWithdraw(StatesGroup):
+    enter_address = State()
+    enter_amount = State()
+    confirm = State()
