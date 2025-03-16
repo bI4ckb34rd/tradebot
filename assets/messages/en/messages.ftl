@@ -21,6 +21,15 @@ messages-token_info = 🚀 <b>{ $name } ({ $symbol })</b> 🚀
 messages-token_not_found = ❗️ Could not find information for token: { $symbol }
 messages-token_error = ❌ Sorry, there was an error fetching the token information.
 
+messages-deposit-info = 📥 To deposit funds to your wallet, send TON or any other assets to this address:
+
+    <code>{ $address }</code>
+
+    ⚠️ Important:
+    • Ensure that you send only assets on the TON blockchain
+    • Double-check the address before sending
+    • The deposit will be credited after network confirmation
+
 messages-buy-ask_address = 🎯 What's the token address you'd like to buy?
 messages-buy-ask_amount = 🔢 Awesome! How much of this token do you want to purchase?
 messages-buy-confirm = ✅ Just to confirm, you're buying <b>{ $amount }</b> of the token at <b>{ $address }</b>. Ready to go?
