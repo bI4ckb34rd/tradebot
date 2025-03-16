@@ -43,7 +43,6 @@ async def enter_amount(
     helper: MessageHelper,
     address: str,
     i18n: I18nContext,
-    state: FSMContext,
 ) -> Any:
     await helper.next_step(
         state=SGWithdraw.enter_amount,
@@ -54,11 +53,26 @@ async def enter_amount(
 
 
 @router.message(SGWithdraw.enter_amount, F.text.cast(int).as_("amount"))
+async def enter_destination(
+    _: Message,
+    helper: MessageHelper,
+    amount: int,
+    i18n: I18nContext,
+) -> Any:
+    await helper.next_step(
+        state=SGWithdraw.enter_destination,
+        text=i18n.messages.withdraw.ask_destination(),
+        reply_markup=to_menu_keyboard(i18n=i18n),
+        update={"amount": amount},
+    )
+
+
+@router.message(SGWithdraw.enter_destination, F.text.as_("destination"))
 async def confirm_withdrawal(
     _: Message,
     helper: MessageHelper,
     state: FSMContext,
-    amount: int,
+    destination: str,
     i18n: I18nContext,
 ) -> Any:
     data: dict[str, Any] = await state.get_data()
@@ -68,11 +82,12 @@ async def confirm_withdrawal(
         state=SGWithdraw.confirm,
         text=i18n.messages.withdraw.confirm(
             address=data["address"],
-            amount=amount,
+            amount=data["amount"],
             token_type=token_type,
+            destination=destination,
         ),
         reply_markup=confirm_keyboard(i18n=i18n),
-        update={"amount": amount},
+        update={"destination": destination},
     )
 
 
@@ -91,14 +106,14 @@ async def process_withdrawal(
     try:
         if data["address"] == "ton":
             tx_hash = await wallet.transfer(
-                to_address=data["address"],
+                destination=data["destination"],
                 amount=data["amount"],
             )
         else:
             tx_hash = await wallet.transfer_jetton(
+                destination=data["destination"],
                 jetton_master_address=data["address"],
-                to_address=data["address"],
-                amount=data["amount"],
+                jetton_amount=data["amount"],
             )
         text = i18n.messages.withdraw.result(tx_hash=tx_hash)
     except:

@@ -33,10 +33,11 @@ messages-sell-result = 🎉 You've successfully sold the token! ✅\n\n📄 Tran
 
 messages-withdraw-ask_address = 🎯 Please enter the token address you want to withdraw. Enter 'ton' if you want to withdraw TON.
 messages-withdraw-ask_amount = 🔢 Great! How much would you like to withdraw?
+messages-withdraw-ask_destination = 📬 Please enter the destination wallet address where you want to send the funds:
 messages-withdraw-confirm = ✅ Just to confirm, you're withdrawing <b>{ $amount }</b> { $token_type ->
     [ton] TON
     *[other] tokens from <b>{ $address }</b>
-}. Ready to proceed?
+} to <b>{ $destination }</b>. Ready to proceed?
 messages-withdraw-result = 🎉 Withdrawal successful! ✅\n\n📄 Transaction Hash: <code>{ $tx_hash }</code>
 
 messages-language = 🌎 Select your preferred language by clicking button below:

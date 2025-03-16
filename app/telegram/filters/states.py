@@ -28,4 +28,5 @@ class SGSell(StatesGroup):
 class SGWithdraw(StatesGroup):
     enter_address = State()
     enter_amount = State()
+    enter_destination = State()
     confirm = State()
