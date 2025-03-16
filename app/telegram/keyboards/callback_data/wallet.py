@@ -11,3 +11,7 @@ class CDDeposit(CallbackData, prefix="deposit"):
 
 class CDWithdraw(CallbackData, prefix="withdraw"):
     pass
+
+
+class CDBackup(CallbackData, prefix="backup"):
+    pass

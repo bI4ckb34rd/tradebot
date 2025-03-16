@@ -49,6 +49,17 @@ messages-withdraw-confirm = ✅ Just to confirm, you're withdrawing <b>{ $amount
 } to <b>{ $destination }</b>. Ready to proceed?
 messages-withdraw-result = 🎉 Withdrawal successful! ✅\n\n📄 Transaction Hash: <code>{ $tx_hash }</code>
 
+messages-backup-warning = 🔐 <b>Your Wallet Recovery Phrase:</b>
+
+    <code>{ $mnemonic }</code>
+
+    ⚠️ <b>IMPORTANT SECURITY WARNING:</b>
+    • This is your wallet's secret recovery phrase
+    • Anyone with these words can access your funds
+    • Never share these words with anyone
+    • Never enter these words on any website
+    • Store them in a safe place offline
+
 messages-language = 🌎 Select your preferred language by clicking button below:
 
 extra-language = 🇬🇧 English
@@ -70,4 +81,5 @@ buttons-limit_order = 📊 Limit Orders
 buttons-copy_trade = 🔄 Copy Trade
 buttons-deposite = 📥 Deposite
 buttons-withdraw = 📤 Withdraw
+buttons-backup = 🔐 Backup
 buttons-confirm = ✅ Yes, I'm sure
