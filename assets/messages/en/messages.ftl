@@ -6,6 +6,71 @@ messages-start = 👋 Hi, { $name }! Welcome to Crypto Trading Bot!
     - Copy Trading
 
     📌 Why? Due to time constraints, these features are not yet implemented. Stay tuned for updates!
+
+messages-wallet-setup = 👛 <b>Welcome to the Wallet Setup!</b>
+
+    To get started, you need to set up your wallet. You have two options:
+
+    1️⃣ Create a new wallet
+    • Generates a new wallet with a unique seed phrase
+    • You'll need to securely store the recovery phrase
+    • Perfect for new users
+
+    2️⃣ Import an existing wallet
+    • Use your existing wallet by entering the seed phrase
+    • Make sure you have your 24-word recovery phrase ready
+    • For users who already have a wallet
+
+    Please choose an option below:
+
+messages-wallet-created = ✅ <b>Your new wallet has been created!</b>
+
+    <b>Wallet Address:</b>
+    <code>{ $address }</code>
+
+    <b>Recovery Phrase:</b>
+    <code>{ $mnemonic }</code>
+
+    ⚠️ <b>IMPORTANT:</b>
+    • Save your recovery phrase in a secure place
+    • Never share it with anyone
+    • You'll need it to recover your wallet
+
+messages-wallet-import_ask = 🔐 Please enter your 24-word recovery phrase:
+
+    • Enter all 24 words separated by spaces
+    • Words should be in English
+    • Double-check for typos
+
+messages-wallet-import_success = ✅ <b>Wallet successfully imported!</b>
+
+    <b>Wallet Address:</b>
+    <code>{ $address }</code>
+
+messages-wallet-import_error = ❌ <b>Error importing wallet</b>
+
+    The recovery phrase you entered is invalid. Please make sure:
+    • You entered all 24 words
+    • Words are spelled correctly
+    • Words are in English
+    • Words are separated by spaces
+
+    Try again or press 'Cancel' to go back.
+
+messages-wallet-unlink_confirm = ⚠️ <b>Are you sure you want to unlink your wallet?</b>
+
+    This action will:
+    • Remove your wallet from the bot
+    • You'll need to create or import a wallet again to use wallet features
+    • Your funds will remain safe in your wallet
+    • You can always import the same wallet back using your recovery phrase
+
+messages-wallet-unlinked = ✅ <b>Wallet successfully unlinked!</b>
+
+    You can now:
+    • Create a new wallet
+    • Import an existing wallet
+
 messages-soon = 🔜 soon ❗️
 messages-wallet_info = 👛 Your Wallet Information:
 
@@ -83,3 +148,6 @@ buttons-deposite = 📥 Deposite
 buttons-withdraw = 📤 Withdraw
 buttons-backup = 🔐 Backup
 buttons-confirm = ✅ Yes, I'm sure
+buttons-create_wallet = 🔑 Create New Wallet
+buttons-import_wallet = 📝 Import Existing Wallet
+buttons-unlink_wallet = 🔓 Unlink Wallet

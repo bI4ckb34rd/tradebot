@@ -10,6 +10,7 @@ from aiogram_i18n import I18nContext
 
 from app.telegram.keyboards.callback_data.menu import CDMenu
 from app.telegram.keyboards.menu import menu_keyboard
+from app.telegram.keyboards.wallet import wallet_setup_keyboard
 
 if TYPE_CHECKING:
     from app.models.dto import UserDto
@@ -28,7 +29,12 @@ async def show_main_menu(
     user: UserDto,
 ) -> Any:
     await state.clear()
+    if user.wallet_connected:
+        return await helper.answer(
+            text=i18n.messages.start(name=user.mention),
+            reply_markup=menu_keyboard(i18n=i18n),
+        )
     return await helper.answer(
-        text=i18n.messages.start(name=user.mention),
-        reply_markup=menu_keyboard(i18n=i18n),
+        text=i18n.messages.wallet.setup(),
+        reply_markup=wallet_setup_keyboard(i18n=i18n),
     )

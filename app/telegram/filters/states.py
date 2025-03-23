@@ -30,3 +30,11 @@ class SGWithdraw(StatesGroup):
     enter_amount = State()
     enter_destination = State()
     confirm = State()
+
+
+class SGImportWallet(StatesGroup):
+    enter_mnemonic = State()
+
+
+class SGUnlinkWallet(StatesGroup):
+    confirm = State()

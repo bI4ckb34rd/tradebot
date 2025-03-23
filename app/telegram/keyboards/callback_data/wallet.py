@@ -15,3 +15,15 @@ class CDWithdraw(CallbackData, prefix="withdraw"):
 
 class CDBackup(CallbackData, prefix="backup"):
     pass
+
+
+class CDCreateWallet(CallbackData, prefix="create_wallet"):
+    pass
+
+
+class CDImportWallet(CallbackData, prefix="import_wallet"):
+    pass
+
+
+class CDUnlinkWallet(CallbackData, prefix="unlink_wallet"):
+    pass
